@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from rest_framework import generics, status
-from .serializers import RoomSerializer, CreateRoomSerializer
-from .models import Room
-from rest_framework.views import APIView
+from rest_framework import generics, status #Status codes
+from .serializers import RoomSerializer, CreateRoomSerializer, ViewCustomerData
+from .models import Room, Customer
+from rest_framework.views import APIView #Parameter
 from rest_framework.response import Response #Custom response
 
 
@@ -70,3 +70,15 @@ class CreateRoomView(APIView):
                 self.request.session['room_code'] = room.code
             return Response(RoomSerializer(room).data, status=status.HTTP_201_CREATED)
 
+class GetCustomer(APIView):
+    serializer_class = ViewCustomerData
+    def post(self, request, format=None):
+        if not self.request.session.exists(self.request.session.session_key): #Checks if current user has active Session (remembering login)
+            self.request.session.create()
+            serializer = self.serializer_class(data=request.data) #Checks if data sent is valid, being id...
+            if serializer.is_valid():
+                customer_id = serializer.data.get('customer_id')
+                customer = Customer(customer_id=customer_id)
+                customer.save()
+                return Response(ViewCustomerData(customer).data, status=status.HTTP_200_OK)
+            return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)

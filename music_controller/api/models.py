@@ -23,3 +23,6 @@ class Room(models.Model): #From DJango documentation
 
     # def is_host ...
     # Fat models, thin views
+
+class Customer(models.Model):
+    customer_id = models.CharField(max_length=50, primary_key=True, unique=True)
