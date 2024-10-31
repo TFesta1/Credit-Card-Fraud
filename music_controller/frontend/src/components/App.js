@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import HomePage from "./HomePage";
 import RoomJoinPage from "./RoomJoinPage";
-import CreateRoomPage from "./CreateRoomPage";
+import CreateRoomPage from "./CreateCohorts";
 
 import { render } from "react-dom";
 

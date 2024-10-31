@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import RoomJoinPage from "./RoomJoinPage";
-import CreateRoomPage from "./CreateRoomPage";
+import CreateRoomPage from "./CreateCohorts";
 import Room from "./Room";
 import { Button, Grid, Typography, ButtonGroup } from "@material-ui/core";
 import { useNavigate, Link } from "react-router-dom";

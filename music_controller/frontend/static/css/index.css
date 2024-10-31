@@ -29,3 +29,16 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.cohorts-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.cohorts-container > * {
+  flex: 1 1 22%; /* each child takes up 25% space */
+  box-sizing: border-box;
+  padding: 10px;
+}
