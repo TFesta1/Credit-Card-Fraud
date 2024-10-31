@@ -36,7 +36,7 @@ const HomePage = () => {
       <div className="home-container">
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
           <Link className="navbar-brand" to="/">
-            Cohorts
+            Options
           </Link>
           <button
             className="navbar-toggler"
@@ -54,12 +54,12 @@ const HomePage = () => {
               {/* Nav links */}
               <li className="nav-item">
                 <Link className="nav-link" to="/join">
-                  Join a Room
+                  Cohorts
                 </Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/create">
-                  Create a Room
+                  Machine Learning Features
                 </Link>
               </li>
             </ul>
@@ -67,7 +67,28 @@ const HomePage = () => {
         </nav>
 
         {/* Table selection */}
-        <div></div>
+        <div className="container mt-5">
+          <div className="table-responsive">
+            <table className="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Customer ID</th>
+                  <th>Customer Name</th>
+                  <th>Transaction Amount</th>
+                  <th>Fraud?</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>John Doe</td>
+                  <td>100</td>
+                  <td>No</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     );
   };
