@@ -15,7 +15,7 @@ def generate_unique_code():
 
 # Group users together in a room
 class Room(models.Model): #From DJango documentation
-    code = models.CharField(max_length=8, default="", unique=True) # 8 char long, unique, default empty string
+    code = models.CharField(max_length=8, default=generate_unique_code, unique=True) # 8 char long, unique, default empty string
     host = models.CharField(max_length=50, unique=True) # host of the room, at most one host (unique=True)
     guest_can_pause = models.BooleanField(null=False, default=False) # Guess must pass a value
     votes_to_skip = models.IntegerField(null=False, default=1)
@@ -23,4 +23,3 @@ class Room(models.Model): #From DJango documentation
 
     # def is_host ...
     # Fat models, thin views
-
