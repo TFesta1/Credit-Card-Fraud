@@ -8,12 +8,8 @@ import { useNavigate, Link } from "react-router-dom";
 // For the router
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-const HomePage = () => {
-  // const navigate = useNavigate();
-
-  const renderHomePage = () => {
-    return (
-      <Grid container spacing={3}>
+/*
+<Grid container spacing={3}>
         <Grid item xs={12} align="center">
           <Typography variant="h3" compact="h3">
             House Party
@@ -30,6 +26,49 @@ const HomePage = () => {
           </ButtonGroup>
         </Grid>
       </Grid>
+    );
+  */
+const HomePage = () => {
+  // const navigate = useNavigate();
+
+  const renderHomePage = () => {
+    return (
+      <div className="home-container">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+          <Link className="navbar-brand" to="/">
+            Cohorts
+          </Link>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav ml-auto">
+              {/* Nav links */}
+              <li className="nav-item">
+                <Link className="nav-link" to="/join">
+                  Join a Room
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/create">
+                  Create a Room
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        {/* Table selection */}
+        <div></div>
+      </div>
     );
   };
 
