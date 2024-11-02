@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Line } from "react-chartjs-2";
 import BarGraph from "./BarGraph";
@@ -66,21 +66,57 @@ import BarGraph from "./BarGraph";
 
 const MLFeatures = () => {
   const navigate = useNavigate();
+  const [features, setFeatures] = useState([]);
+  const [data, setData] = useState([]);
+  const [labels, setLabels] = useState([]);
   // npm install chart.js react-chartjs-2
-  const testData = [
-    [65, 59, 80, 81, 56, 55, 40],
-    // [28, 48, 40, 19, 86, 27, 90],
-    // [18, 48, 77, 9, 100, 27, 40],
-  ];
-  const labels = [
-    "Label1",
-    "Label2",
-    "Label3",
-    "Label4",
-    "Label5",
-    "Label6",
-    "Label7",
-  ];
+  //   const testData = [
+  //     [65, 59, 80, 81, 56, 55, 40],
+  //     // [28, 48, 40, 19, 86, 27, 90],
+  //     // [18, 48, 77, 9, 100, 27, 40],
+  //   ];
+  //   const labels = [
+  //     "Label1",
+  //     "Label2",
+  //     "Label3",
+  //     "Label4",
+  //     "Label5",
+  //     "Label6",
+  //     "Label7",
+  //   ];
+
+  // The purpsoe of this is to load features once from the backend and save it
+  useEffect(() => {
+    const getRequestOptions = {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    };
+    fetch("/api/get-features", getRequestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data[0]);
+        setLabels(data[1]);
+      })
+      .catch((error) => console.error("Error fetching features: ", error));
+  }, []);
+
+  useEffect(() => {
+    if (data.length > 0 && labels.length > 0) {
+      console.log(data);
+      console.log(labels);
+    }
+  }, [data, labels]);
+
+  //   const getRequestOptions = {
+  //     method: "GET",
+  //     headers: { "Content-Type": "application/json" },
+  //   };
+
+  //   fetch("/api/get-features", getRequestOptions).then((response) =>
+  //     setFeatures(response.json())
+  //   );
+
+  //   console.log(features);
 
   const renderCohorts = () => {
     return (
@@ -88,7 +124,7 @@ const MLFeatures = () => {
         <h2 className="headers">PCA Features</h2>
 
         {/* <h2 className="bg-dark">Cohorts Analysis</h2> */}
-        <BarGraph dataSets={testData} labels={labels} />
+        <BarGraph dataSets={data} labels={labels} />
         {/* <div className="cohorts-container-child">
           <MultiLineGraph dataSets={testData} />
         </div> */}

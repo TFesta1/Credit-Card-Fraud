@@ -4,6 +4,7 @@ from .serializers import RoomSerializer, CreateRoomSerializer, ViewCustomerData
 from .models import Room, Customer
 from rest_framework.views import APIView #Parameter
 from rest_framework.response import Response #Custom response
+from .mlBackend.features import features
 
 
 # Create your views here.
@@ -82,3 +83,9 @@ class GetCustomer(APIView):
                 customer.save()
                 return Response(ViewCustomerData(customer).data, status=status.HTTP_200_OK)
             return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetFeatures(APIView):
+    def get(self, request, format=None):
+        featureList = features()
+        return Response(featureList, status=status.HTTP_200_OK)

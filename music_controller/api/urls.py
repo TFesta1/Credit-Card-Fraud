@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import RoomView, CreateRoomView, GetRoom, JoinRoom, GetCustomer
+from .views import RoomView, CreateRoomView, GetRoom, JoinRoom, GetCustomer, GetFeatures
 
 
 urlpatterns = [
@@ -7,7 +7,8 @@ urlpatterns = [
     path('create-room', CreateRoomView.as_view()),
     path('get-room', GetRoom.as_view()),
     path('join-room', JoinRoom.as_view()),
-    path('get-customer', GetCustomer.as_view())
+    path('get-customer', GetCustomer.as_view()),
+    path('get-features', GetFeatures.as_view())
 ]
 
 
