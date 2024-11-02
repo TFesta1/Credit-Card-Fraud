@@ -70,7 +70,7 @@ const MLFeatures = () => {
   const [data, setData] = useState([]);
   const [labels, setLabels] = useState([]);
   // npm install chart.js react-chartjs-2
-  //   const testData = [
+  //   const data = [
   //     [65, 59, 80, 81, 56, 55, 40],
   //     // [28, 48, 40, 19, 86, 27, 90],
   //     // [18, 48, 77, 9, 100, 27, 40],
@@ -98,25 +98,14 @@ const MLFeatures = () => {
         setLabels(data[1]);
       })
       .catch((error) => console.error("Error fetching features: ", error));
-  }, []);
+  }, []); //This empty array means that this useEffect will only run once
 
   useEffect(() => {
     if (data.length > 0 && labels.length > 0) {
       console.log(data);
       console.log(labels);
     }
-  }, [data, labels]);
-
-  //   const getRequestOptions = {
-  //     method: "GET",
-  //     headers: { "Content-Type": "application/json" },
-  //   };
-
-  //   fetch("/api/get-features", getRequestOptions).then((response) =>
-  //     setFeatures(response.json())
-  //   );
-
-  //   console.log(features);
+  }, [data, labels]); //This means it runs when either data or labels change
 
   const renderCohorts = () => {
     return (
