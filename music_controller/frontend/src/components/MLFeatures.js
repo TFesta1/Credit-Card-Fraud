@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Line } from "react-chartjs-2";
-import MultiLineGraph from "./MultiLineGraph";
-
+import BarGraph from "./BarGraph";
 {
   /* <Grid container spacing={1}>
         <Grid item xs={12} align="center">
@@ -65,7 +64,7 @@ import MultiLineGraph from "./MultiLineGraph";
       </Grid> */
 }
 
-const CreateCohorts = () => {
+const MLFeatures = () => {
   const navigate = useNavigate();
   // npm install chart.js react-chartjs-2
   const testData = [
@@ -77,8 +76,12 @@ const CreateCohorts = () => {
   const renderCohorts = () => {
     return (
       <div className="cohorts-container">
+        <h2>
+          PCA Features, Uncorrelated Variables Ordered in Most Influential
+        </h2>
+
         {/* <h2 className="bg-dark">Cohorts Analysis</h2> */}
-        <MultiLineGraph dataSets={testData} />
+        <BarGraph dataSets={testData} />
         {/* <div className="cohorts-container-child">
           <MultiLineGraph dataSets={testData} />
         </div> */}
@@ -90,7 +93,7 @@ const CreateCohorts = () => {
   return renderCohorts();
 };
 
-export default CreateCohorts;
+export default MLFeatures;
 
 /*
 // Class based component

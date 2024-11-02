@@ -53,12 +53,12 @@ const HomePage = () => {
             <ul className="navbar-nav ml-auto">
               {/* Nav links */}
               <li className="nav-item">
-                <Link className="nav-link" to="/join">
+                <Link className="nav-link" to="/create">
                   Cohorts
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/create">
+                <Link className="nav-link" to="/join">
                   Machine Learning Features
                 </Link>
               </li>
