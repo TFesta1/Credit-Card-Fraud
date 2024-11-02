@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
+  BarElement,
   PointElement,
   LineElement,
   Title,
@@ -12,32 +12,62 @@ import {
   Legend,
 } from "chart.js";
 ChartJS.register(
-  CategoryScale, // Scales X axis
-  LinearScale, // Scales Y axis
-  PointElement, //Plotting
-  LineElement, // Lines between points
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
   Title,
   Tooltip,
   Legend
 );
 
-const BarGraph = ({ dataSets }) => {
+const BarGraph = ({ dataSets, labels }) => {
+  const colors = [
+    "rgba(54, 162, 235, 0.5)",
+    "rgba(75, 192, 192, 0.5)",
+    "rgba(153, 102, 255, 0.5)",
+    "rgba(255, 159, 64, 0.5)",
+  ];
+  const borderColors = [
+    "rgba(255, 99, 132, 1)",
+    "rgba(54, 162, 235, 1)",
+    "rgba(75, 192, 192, 1)",
+    "rgba(153, 102, 255, 1)",
+    "rgba(255, 159, 64, 1)",
+  ];
   const data = {
-    labels: Array.from(
-      //labels made from the max length of the dataSets
-      { length: Math.max(...dataSets.map((data) => data.length)) },
-      (_, i) => `P${i + 1}`
-    ),
+    labels: labels,
+
+    // Array.from(
+    //   { length: Math.max(...labels.map((data) => data.length)) },
+    //   (label, i) => `${labels[i]}`
+    // ),
+
     datasets: dataSets.map((data, index) => ({
-      label: `Cohort ${index + 1}`,
-      data, //datapoints
-      fill: false, //area under line filled
-      borderColor: `rgba(${index * 50}, 99, 132, 1)`, //color of the line
-      tension: 0.1, //curve of the line
+      label: "Features", //`Cohort ${index + 1}`,
+      data,
+      fill: false,
+      backgroundColor: data.map((_, i) => colors[i % colors.length]), // i % colors.length means division remainder is the index
+      borderColor: data.map((_, i) => borderColors[i % colors.length]), //`rgba(${index * 125 + 50}, 99, 132, 1)`,
+      borderWidth: 1,
     })),
   };
 
-  return <Bar data={data} />;
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+      title: {
+        display: true,
+        text: "My Bar Graph",
+      },
+    },
+  };
+
+  return <Bar data={data} options={options} />;
 };
 
 export default BarGraph;

@@ -33,8 +33,17 @@ body {
 .cohorts-container {
   display: flex;
   flex-wrap: wrap;
-  /* width: 100%;
-  justify-content: space-around; */
+  /* background-color: rgb(10, 10, 10); */
+  width: 100%;
+  justify-content: space-around;
+}
+
+.headers {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: black;
 }
 
 /* .cohorts-container-child {

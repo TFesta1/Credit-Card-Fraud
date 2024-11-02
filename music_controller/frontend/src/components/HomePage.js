@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import RoomJoinPage from "./RoomJoinPage";
-import CreateRoomPage from "./CreateCohorts";
+// import RoomJoinPage from "./RoomJoinPage";
+import MLFeatures from "./MLFeatures";
+import CreateCohorts from "./CreateCohorts";
 import Room from "./Room";
 import { Button, Grid, Typography, ButtonGroup } from "@material-ui/core";
 import { useNavigate, Link } from "react-router-dom";
@@ -97,8 +98,8 @@ const HomePage = () => {
     <Router>
       <Routes>
         <Route path="/" element={renderHomePage()} />
-        <Route path="/join" element={<RoomJoinPage />} />
-        <Route path="/create" element={<CreateRoomPage />} />
+        <Route path="/join" element={<MLFeatures />} />
+        <Route path="/create" element={<CreateCohorts />} />
         <Route path="/room/:roomCode" element={<Room />} />
         {/* :roomCode is a variable. This by default passes roomCode as "matched", which is just a param for how it got there, and we can use this to get the room */}
       </Routes>

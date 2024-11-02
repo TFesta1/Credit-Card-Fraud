@@ -69,19 +69,26 @@ const MLFeatures = () => {
   // npm install chart.js react-chartjs-2
   const testData = [
     [65, 59, 80, 81, 56, 55, 40],
-    [28, 48, 40, 19, 86, 27, 90],
-    [18, 48, 77, 9, 100, 27, 40],
+    // [28, 48, 40, 19, 86, 27, 90],
+    // [18, 48, 77, 9, 100, 27, 40],
+  ];
+  const labels = [
+    "Label1",
+    "Label2",
+    "Label3",
+    "Label4",
+    "Label5",
+    "Label6",
+    "Label7",
   ];
 
   const renderCohorts = () => {
     return (
       <div className="cohorts-container">
-        <h2>
-          PCA Features, Uncorrelated Variables Ordered in Most Influential
-        </h2>
+        <h2 className="headers">PCA Features</h2>
 
         {/* <h2 className="bg-dark">Cohorts Analysis</h2> */}
-        <BarGraph dataSets={testData} />
+        <BarGraph dataSets={testData} labels={labels} />
         {/* <div className="cohorts-container-child">
           <MultiLineGraph dataSets={testData} />
         </div> */}
