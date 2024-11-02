@@ -54,12 +54,12 @@ const HomePage = () => {
             <ul className="navbar-nav ml-auto">
               {/* Nav links */}
               <li className="nav-item">
-                <Link className="nav-link" to="/create">
+                <Link className="nav-link" to="/cohorts">
                   Cohorts
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/join">
+                <Link className="nav-link" to="/mlFeatures">
                   Machine Learning Features
                 </Link>
               </li>
@@ -98,8 +98,8 @@ const HomePage = () => {
     <Router>
       <Routes>
         <Route path="/" element={renderHomePage()} />
-        <Route path="/join" element={<MLFeatures />} />
-        <Route path="/create" element={<CreateCohorts />} />
+        <Route path="/mlFeatures" element={<MLFeatures />} />
+        <Route path="/cohorts" element={<CreateCohorts />} />
         <Route path="/room/:roomCode" element={<Room />} />
         {/* :roomCode is a variable. This by default passes roomCode as "matched", which is just a param for how it got there, and we can use this to get the room */}
       </Routes>

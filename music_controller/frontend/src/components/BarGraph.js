@@ -63,7 +63,7 @@ const BarGraph = ({ dataSets, labels }) => {
       },
       title: {
         display: true,
-        text: "My Bar Graph",
+        text: "Uncorrelated Variables",
       },
     },
   };
