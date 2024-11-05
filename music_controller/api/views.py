@@ -58,7 +58,7 @@ class CreateRoomView(APIView):
             guest_can_pause = serializer.data.get('guest_can_pause')
             votes_to_skip = serializer.data.get('votes_to_skip')
             host = self.request.session.session_key
-            queryset = Room.objects.filter(host=host) #Any rooms in db that have the same host
+            queryset = Room.objects.filter(host=host) #Any rooms in db that have the same host 
             if queryset.exists(): #Do not create a new room if it exists already
                 room = queryset[0] #Grab active room that exists
                 room.guest_can_pause = guest_can_pause
