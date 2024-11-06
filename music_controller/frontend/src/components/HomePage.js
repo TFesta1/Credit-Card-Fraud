@@ -34,7 +34,7 @@ const HomePage = () => {
 
   const renderHomePage = () => {
     return (
-      <div className="home-container">
+      <div className="home-container center">
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
           <Link className="navbar-brand" to="/">
             Options

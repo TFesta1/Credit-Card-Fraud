@@ -30,6 +30,28 @@ body {
   transform: translate(-50%, -50%);
 }
 
+.center-title {
+  text-align: center;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.width-100 {
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.test-width {
+  width: 1000px;
+}
+
 .cohorts-container {
   display: flex;
   flex-wrap: wrap;
@@ -40,14 +62,14 @@ body {
 
 .headers {
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* center the text */
   align-items: center;
   padding: 10px;
   background-color: black;
 }
 
-/* .cohorts-container-child {
-  flex: 1 0 22%; 
+.cohorts-container-child {
+  flex: 1 0 25%;
   box-sizing: border-box;
   padding: 10px;
-} */
+}

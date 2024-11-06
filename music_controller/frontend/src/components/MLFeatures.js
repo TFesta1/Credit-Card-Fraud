@@ -109,11 +109,35 @@ const MLFeatures = () => {
 
   const renderCohorts = () => {
     return (
-      <div className="cohorts-container">
-        <h2 className="headers">PCA Features</h2>
+      <div>
+        <div>
+          <h2 className="headers">PCA Features</h2>
+        </div>
+
+        <div className="cohorts-container">
+          <div className="cohorts-container-child">
+            <BarGraph dataSets={data} labels={labels} />
+          </div>
+          <div className="cohorts-container-child">
+            <BarGraph dataSets={data} labels={labels} />
+          </div>
+        </div>
+        <div className="cohorts-container">
+          <div className="cohorts-container-child">
+            <BarGraph dataSets={data} labels={labels} />
+          </div>
+          <div className="cohorts-container-child">
+            <BarGraph dataSets={data} labels={labels} />
+          </div>
+        </div>
+        {/* <div className="cohorts-container">
+          <div className="cohorts-container-child">
+            
+          </div>
+        </div> */}
 
         {/* <h2 className="bg-dark">Cohorts Analysis</h2> */}
-        <BarGraph dataSets={data} labels={labels} />
+
         {/* <div className="cohorts-container-child">
           <MultiLineGraph dataSets={testData} />
         </div> */}

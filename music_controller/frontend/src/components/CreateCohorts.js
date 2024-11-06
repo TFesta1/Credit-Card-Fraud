@@ -76,14 +76,16 @@ const CreateCohorts = () => {
 
   const renderCohorts = () => {
     return (
-      <div className="cohorts-container">
-        {/* <h2 className="bg-dark">Cohorts Analysis</h2> */}
-        <MultiLineGraph dataSets={testData} />
-        {/* <div className="cohorts-container-child">
-          <MultiLineGraph dataSets={testData} />
-        </div> */}
-        {/* <MultiLineGraph dataSets={testData} />
-        <MultiLineGraph dataSets={testData} /> */}
+      <div>
+        <div>
+          <h2 className="headers">Cohorts Analysis</h2>
+        </div>
+        <div className="cohorts-container">
+          {/* <h2 className="bg-dark">Cohorts Analysis</h2> */}
+          <div className="cohorts-container-child">
+            <MultiLineGraph dataSets={testData} />
+          </div>
+        </div>
       </div>
     );
   };

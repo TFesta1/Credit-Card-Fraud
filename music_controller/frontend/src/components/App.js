@@ -9,10 +9,10 @@ export default class App extends Component {
   constructor(props) {
     super(props);
   }
-
+  //className="center"
   render() {
     return (
-      <div className="center">
+      <div className="width-100">
         <HomePage />
       </div>
     );
