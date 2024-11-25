@@ -4,7 +4,8 @@ from .serializers import RoomSerializer, CreateRoomSerializer, ViewCustomerData
 from .models import Room, Customer
 from rest_framework.views import APIView #Parameter
 from rest_framework.response import Response #Custom response
-from .mlBackend.features import features
+from .mlBackend.features import features 
+from .mlBackend.mlModel import modelData
 
 
 # Create your views here.
@@ -89,3 +90,9 @@ class GetFeatures(APIView):
     def get(self, request, format=None):
         featureList = features()
         return Response(featureList, status=status.HTTP_200_OK)
+    
+class GetModel(APIView):
+    def get(self, request, format=None):
+        if modelData:
+            return Response(modelData, status=status.HTTP_200_OK)
+        return Response({'Bad Request': 'Model not found'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
