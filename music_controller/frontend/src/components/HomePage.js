@@ -148,32 +148,27 @@ const HomePage = () => {
                   <th>Customer Name</th>
                   <th>Transaction Amount</th>
                   <th>Fraud?</th> */}
+                  <th>Prediction</th>
                   {modelLabelsRef.current.map((label, index) => (
                     <th key={index}>{label}</th>
                   ))}
-                  <th>Prediction</th>
                 </tr>
               </thead>
               <tbody>
                 {tableData.map((row, rowIndex) => (
                   <tr key={rowIndex}>
-                    {Object.values(row).map((value, colIndex) => {
-                      //Object.values converts row to array
-                      if (colIndex < modelLabelsRef.current.length) {
-                        return <td key={colIndex}>{value}</td>;
-                      } else {
-                        return (
-                          <td
-                            key={colIndex}
-                            className={
-                              value === 1 ? "fraudulent" : "non-fraudulent"
-                            }
-                          >
-                            {value === 1 ? "Fraudulent" : "Non-Fraudulent"}
-                          </td>
-                        );
+                    <td
+                      className={
+                        row.prediction === 1 ? "fraudulent" : "non-fraudulent"
                       }
-                    })}
+                    >
+                      {row.prediction === 1 ? "Fraudulent" : "Non-Fraudulent"}
+                    </td>
+                    {Object.values(row)
+                      .slice(0, -1) //0 to everything besides the last element
+                      .map((value, colIndex) => (
+                        <td key={colIndex}>{value}</td>
+                      ))}
                   </tr>
                 ))}
               </tbody>
