@@ -1,10 +1,13 @@
+import json
 modelData = None
 
 def trainModel(): 
     global modelData
     import time
     from pyspark.sql import SparkSession
-    from pyspark.sql.functions import col, count, isnan, when, explode, array, lit
+    from pyspark.sql.functions import col, count, isnan, when, explode, array, lit, udf
+    from pyspark.sql.types import ArrayType, FloatType
+    
     from pyspark.ml.feature import VectorAssembler
     from pyspark.ml.feature import StandardScaler
     from pyspark.ml.feature import StringIndexer
@@ -15,9 +18,9 @@ def trainModel():
     from pyspark.ml.evaluation import MulticlassClassificationEvaluator
     from pyspark.ml.feature import MinMaxScaler
 
-    time.sleep(4)
-    modelData = ("Model", [1,2,3,4,5])
-    return
+    # time.sleep(4)
+    # modelData = ("Model", [[1,2,3,4,5], [2,3,4,5,6]])
+    # return
 
     # Create a Spark session
     spark = SparkSession.builder.appName("CreditCardFraudDetection").getOrCreate()
@@ -59,6 +62,8 @@ def trainModel():
 
     minmax_scaler = MinMaxScaler(inputCol='features', outputCol='scaled_features') #Columns of "features" should be scaled and outputted to "scaled_features"
     data_o = minmax_scaler.fit(data_o).transform(data_o) #Computes min and max to scale features, then stores them in scaled_features
+    
+    
     train_o, test_o = data_o.randomSplit([0.7,0.3]) #Split the data again with the scaled_features
 
     gradient_boost_class = GBTClassifier(labelCol='Class', featuresCol='scaled_features')
@@ -77,9 +82,29 @@ def trainModel():
         f'  Accuracy:          {accuracy_gbc_o:.4f}\n'
         f'  Weighted Precision: {weightedPrecision_gbc_o:.4f}\n'
         f'  Weighted Recall:    {weightedRecall_gbc_o:.4f}\n')
+    # Model path within current directory of project
+    # modelPath = "model"
+    # model_o.write().overwrite().save(modelPath)
+    
+    # Convert DenseVector to list using UDF
+    # def dense_to_list(dense_vec):
+    #     return dense_vec.toArray().tolist()
 
-    modelData = (data_o, model_o)
+    # # Register the UDF
+    # dense_to_list_udf = udf(dense_to_list, ArrayType(FloatType()))
+
+    # # Apply the UDF to convert DenseVector to list
+    # data_o = data_o.withColumn('scaled_features', dense_to_list_udf(data_o['scaled_features']))
+
+    # modelData = json.dumps(data_o.toPandas().to_dict(orient='records'))
     # Make a test prediction
     # newItem = test_o.limit(1)
     # newPrediction = model_o.transform(newItem)
     # newPrediction.select('Class', 'scaled_features', 'prediction').show(truncate=False)
+
+    df = predicted_test_gbc_o.toPandas()
+
+    predictions = list(df['prediction'].values)
+    features = list([list(i) for i in df['features'].values])
+    modelData = (features, predictions, cols)
+

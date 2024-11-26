@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect, useRef, Component } from "react";
 // import RoomJoinPage from "./RoomJoinPage";
 import MLFeatures from "./MLFeatures";
 import CreateCohorts from "./CreateCohorts";
@@ -31,6 +31,77 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
   */
 const HomePage = () => {
   // const navigate = useNavigate();
+
+  const [modelFeatures, setModelFeatures] = useState([]);
+  const [modelPredictions, setModelPredictions] = useState([]);
+  const [modelLabels, setModelLabels] = useState([]);
+  const [tableData, setTableData] = useState([]);
+
+  const intervalRef = useRef();
+  const modelFeaturesRef = useRef(modelFeatures);
+  const modelPredictionsRef = useRef(modelPredictions);
+  const modelLabelsRef = useRef(modelLabels);
+  const [retryCount, setRetryCount] = useState(0);
+
+  const prepareTableData = (features, predictions) => {
+    const slicedFeatures = features.slice(-5); //Get the last 5 features
+    const table = slicedFeatures.map((row, index) => {
+      //For each index,
+      return {
+        ...row, // Everything in the row
+        prediction: predictions[predictions.length - 1 - index], // Add the prediction
+      };
+    });
+    setTableData(table);
+    console.log("Table Data: ", table);
+  };
+
+  useEffect(() => {
+    modelFeaturesRef.current = modelFeatures;
+    modelPredictionsRef.current = modelPredictions;
+    modelLabelsRef.current = modelLabels;
+  }, [modelPredictions, modelFeatures, modelLabels]);
+  // npm install chart.js react-chartjs-2
+  useEffect(() => {
+    const fetchData = () => {
+      const getRequestOptions = {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      };
+      fetch("/api/get-model", getRequestOptions)
+        .then((response) => response.json())
+        .then((data) => {
+          setModelFeatures(data[0]); //          setModel(data[0]);
+          setModelPredictions(data[1]);
+          setModelLabels(data[2]);
+          prepareTableData(data[0], data[1]);
+        })
+        .catch((error) => {
+          console.error("Error fetching model: ", error);
+          setRetryCount((prevCount) => prevCount + 1);
+        });
+    };
+    fetchData();
+    // We could easily modify this code to just run every 3s if we needed a script to do so, but we're running it once here
+    // modelPredictionsRef.current.length === 0 ||
+    // modelLabelsRef.current.length === 0
+    intervalRef.current = setInterval(() => {
+      if (modelFeaturesRef.current.length === 0) {
+        fetchData();
+        console.log("Retrying to fetch model data: ", modelFeatures);
+      } else {
+        console.log(
+          " Model Features ",
+          modelFeaturesRef,
+          " Model Predictions ",
+          modelPredictionsRef,
+          " Model Labels ",
+          modelLabelsRef
+        );
+        clearInterval(intervalRef.current);
+      }
+    }, 3000); // Retry every 3 seconds
+  }, []); //This means it runs when either model or modelData change
 
   const renderHomePage = () => {
     return (
@@ -73,19 +144,38 @@ const HomePage = () => {
             <table className="table table-bordered">
               <thead>
                 <tr>
-                  <th>Customer ID</th>
+                  {/* <th>Customer ID</th>
                   <th>Customer Name</th>
                   <th>Transaction Amount</th>
-                  <th>Fraud?</th>
+                  <th>Fraud?</th> */}
+                  {modelLabelsRef.current.map((label, index) => (
+                    <th key={index}>{label}</th>
+                  ))}
+                  <th>Prediction</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>John Doe</td>
-                  <td>100</td>
-                  <td>No</td>
-                </tr>
+                {tableData.map((row, rowIndex) => (
+                  <tr key={rowIndex}>
+                    {Object.values(row).map((value, colIndex) => {
+                      //Object.values converts row to array
+                      if (colIndex < modelLabelsRef.current.length) {
+                        return <td key={colIndex}>{value}</td>;
+                      } else {
+                        return (
+                          <td
+                            key={colIndex}
+                            className={
+                              value === 1 ? "fraudulent" : "non-fraudulent"
+                            }
+                          >
+                            {value === 1 ? "Fraudulent" : "Non-Fraudulent"}
+                          </td>
+                        );
+                      }
+                    })}
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

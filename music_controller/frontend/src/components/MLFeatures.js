@@ -70,13 +70,6 @@ const MLFeatures = () => {
   const [data, setData] = useState([]);
   const [labels, setLabels] = useState([]);
 
-  const [model, setModel] = useState([]);
-  const [modelData, setModelData] = useState([]);
-
-  const intervalRef = useRef();
-  const modelRef = useRef(model);
-  const modelDataRef = useRef(modelData);
-  // npm install chart.js react-chartjs-2
   //   const data = [
   //     [65, 59, 80, 81, 56, 55, 40],
   //     // [28, 48, 40, 19, 86, 27, 90],
@@ -92,10 +85,7 @@ const MLFeatures = () => {
   //     "Label7",
   //   ];
 
-  useEffect(() => {
-    modelRef.current = model;
-    modelDataRef.current = modelData;
-  }, [model, modelData]); //This means it runs when either model or modelData change, keeping the refs up to date
+  //This means it runs when either model or modelData change, keeping the refs up to date
   // The purpsoe of this is to load features once from the backend and save it
   useEffect(() => {
     const getRequestOptions = {
@@ -107,49 +97,11 @@ const MLFeatures = () => {
       .then((data) => {
         setData(data[0]);
         setLabels(data[1]);
+        console.log("Data: ", data[0], " Labels: ", data[1]);
       })
       .catch((error) => console.error("Error fetching features: ", error));
   }, []); //This empty array means that this useEffect will only run once
 
-  useEffect(() => {
-    const fetchData = () => {
-      const getRequestOptions = {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      };
-      fetch("/api/get-model", getRequestOptions)
-        .then((response) => response.json())
-        .then((data) => {
-          setModel(data[0]);
-          setModelData(data[1]);
-        })
-        .catch((error) => {
-          console.error("Error fetching model: ", error);
-          setRetryCount((prevCount) => prevCount + 1);
-        });
-    };
-    fetchData();
-    // We could easily modify this code to just run every 3s if we needed a script to do so, but we're running it once here
-    intervalRef.current = setInterval(() => {
-      if (modelRef.current.length === 0 || modelDataRef.current.length === 0) {
-        fetchData();
-        console.log("Retrying to fetch model data: ", modelData);
-      } else {
-        clearInterval(intervalRef.current);
-      }
-    }, 3000); // Retry every 3 seconds
-  }, []); //This means it runs when either model or modelData change
-
-  console.log(
-    "Model: ",
-    model,
-    " Model Length: ",
-    model.length,
-    " Model Data ",
-    modelData,
-    " Model Data Length: ",
-    modelData.length
-  );
   // console.log(
   //   "Model Data: ",
   //   modelData,
