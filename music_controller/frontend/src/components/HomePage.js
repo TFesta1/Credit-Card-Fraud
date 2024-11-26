@@ -35,6 +35,7 @@ const HomePage = () => {
   const [modelFeatures, setModelFeatures] = useState([]);
   const [modelPredictions, setModelPredictions] = useState([]);
   const [modelLabels, setModelLabels] = useState([]);
+  const [modelInfo, setModelInfo] = useState({});
   const [tableData, setTableData] = useState([]);
 
   const intervalRef = useRef();
@@ -44,6 +45,20 @@ const HomePage = () => {
   const [retryCount, setRetryCount] = useState(0);
 
   const prepareTableData = (features, predictions) => {
+    // let randomIndexes = Array.from({ length: 5 }, () =>
+    //   Math.floor(Math.random() * features.length)
+    // );
+    // randomIndexes = [100, 1000, 2000, 4000, 5000];
+    // console.log("Random Indexes: ", randomIndexes);
+    // const table = randomIndexes.map((row, index) => {
+    //   //For each index,
+    //   return {
+    //     ...features[index], // Everything in the row
+    //     prediction: predictions[index], // Add the prediction
+    //   };
+    // });
+    // setTableData(table);
+    // Retrieving the 5 latest ones
     const slicedFeatures = features.slice(-5); //Get the last 5 features
     const table = slicedFeatures.map((row, index) => {
       //For each index,
@@ -100,7 +115,7 @@ const HomePage = () => {
         );
         clearInterval(intervalRef.current);
       }
-    }, 3000); // Retry every 3 seconds
+    }, 500); // Retry every 3 seconds
   }, []); //This means it runs when either model or modelData change
 
   const renderHomePage = () => {
@@ -137,7 +152,9 @@ const HomePage = () => {
             </ul>
           </div>
         </nav>
-
+        <div>
+          <h2 className="headers">Latest Feed</h2>
+        </div>
         {/* Table selection */}
         <div className="container mt-5">
           <div className="table-responsive">
@@ -174,6 +191,9 @@ const HomePage = () => {
               </tbody>
             </table>
           </div>
+        </div>
+        <div>
+          <h2 className="headers">Important Dataset Info</h2>
         </div>
       </div>
     );

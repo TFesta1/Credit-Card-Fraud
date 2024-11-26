@@ -102,9 +102,36 @@ def trainModel():
     # newPrediction = model_o.transform(newItem)
     # newPrediction.select('Class', 'scaled_features', 'prediction').show(truncate=False)
 
-    df = predicted_test_gbc_o.toPandas()
+    df2 = predicted_test_gbc_o.toPandas()
 
-    predictions = list(df['prediction'].values)
-    features = list([list(i) for i in df['features'].values])
-    modelData = (features, predictions, cols)
+    predictions = list(df2['prediction'].values)
+    features = list([list(i) for i in df2['features'].values])
+
+    total_transactions = df.count()
+
+    # Total number of columns
+    total_columns = len(df.columns)
+
+    # Total number of features (assuming the last column is the label)
+    total_features = total_columns - 1
+
+    # Total number of label(s)
+    total_labels = 1
+
+    # Total number of normal transactions
+    total_normal_transactions = df.filter(col('Class') == 0).count()
+
+    # Total number of fraudulent transactions
+    total_fraudulent_transactions = df.filter(col('Class') == 1).count()
+
+    # Percentage of fraudulent transactions
+    percentage_fraudulent = (total_fraudulent_transactions / total_transactions) * 100
+
+    # Percentage of normal transactions
+    percentage_normal = (total_normal_transactions / total_transactions) * 100
+
+    # We'll return all of this info on the front-end to display
+    datasetInfo = [total_transactions, total_columns, total_features, total_labels, total_normal_transactions, total_fraudulent_transactions, "{:.4f}%".format(percentage_fraudulent), "{:.4f}%".format(percentage_normal)]
+    
+    modelData = (features, predictions, cols, datasetInfo)
 
