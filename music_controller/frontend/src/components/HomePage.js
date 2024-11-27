@@ -35,13 +35,14 @@ const HomePage = () => {
   const [modelFeatures, setModelFeatures] = useState([]);
   const [modelPredictions, setModelPredictions] = useState([]);
   const [modelLabels, setModelLabels] = useState([]);
-  const [modelInfo, setModelInfo] = useState({});
+  const [datasetInfo, setDatasetInfo] = useState({});
   const [tableData, setTableData] = useState([]);
 
   const intervalRef = useRef();
   const modelFeaturesRef = useRef(modelFeatures);
   const modelPredictionsRef = useRef(modelPredictions);
   const modelLabelsRef = useRef(modelLabels);
+  const datasetInfoRef = useRef(datasetInfo);
   const [retryCount, setRetryCount] = useState(0);
 
   const prepareTableData = (features, predictions) => {
@@ -75,7 +76,8 @@ const HomePage = () => {
     modelFeaturesRef.current = modelFeatures;
     modelPredictionsRef.current = modelPredictions;
     modelLabelsRef.current = modelLabels;
-  }, [modelPredictions, modelFeatures, modelLabels]);
+    datasetInfoRef.current = datasetInfo;
+  }, [modelPredictions, modelFeatures, modelLabels, datasetInfo]);
   // npm install chart.js react-chartjs-2
   useEffect(() => {
     const fetchData = () => {
@@ -90,6 +92,17 @@ const HomePage = () => {
           setModelPredictions(data[1]);
           setModelLabels(data[2]);
           prepareTableData(data[0], data[1]);
+          const datasetInfoObj = {
+            total_transactions: data[3][0],
+            total_columns: data[3][1],
+            total_features: data[3][2],
+            total_labels: data[3][3],
+            total_normal_transactions: data[3][4],
+            total_fraudulent_transactions: data[3][5],
+            percentage_fraudulent: data[3][6],
+            percentage_normal: data[3][7],
+          };
+          setDatasetInfo(datasetInfoObj);
         })
         .catch((error) => {
           console.error("Error fetching model: ", error);
@@ -101,7 +114,12 @@ const HomePage = () => {
     // modelPredictionsRef.current.length === 0 ||
     // modelLabelsRef.current.length === 0
     intervalRef.current = setInterval(() => {
-      if (modelFeaturesRef.current.length === 0) {
+      if (
+        modelFeaturesRef.current.length === 0 ||
+        modelPredictionsRef.current.length === 0 ||
+        modelLabelsRef.current.length === 0 ||
+        datasetInfoRef.current.length === 0
+      ) {
         fetchData();
         console.log("Retrying to fetch model data: ", modelFeatures);
       } else {
@@ -111,7 +129,9 @@ const HomePage = () => {
           " Model Predictions ",
           modelPredictionsRef,
           " Model Labels ",
-          modelLabelsRef
+          modelLabelsRef,
+          " Dataset Info ",
+          datasetInfoRef
         );
         clearInterval(intervalRef.current);
       }
@@ -194,6 +214,40 @@ const HomePage = () => {
         </div>
         <div>
           <h2 className="headers">Important Dataset Info</h2>
+        </div>
+        <div className="info-section scrollable-section">
+          <p>
+            <span className="label">Total Transactions:</span>{" "}
+            {datasetInfo.total_transactions}
+          </p>
+          <p>
+            <span className="label">Total Columns:</span>{" "}
+            {datasetInfo.total_columns}
+          </p>
+          <p>
+            <span className="label">Total Features:</span>{" "}
+            {datasetInfo.total_features}
+          </p>
+          <p>
+            <span className="label">Total Labels:</span>{" "}
+            {datasetInfo.total_labels}
+          </p>
+          <p>
+            <span className="label">Total Normal Transactions:</span>{" "}
+            {datasetInfo.total_normal_transactions}
+          </p>
+          <p>
+            <span className="label">Total Fraudulent Transactions:</span>{" "}
+            {datasetInfo.total_fraudulent_transactions}
+          </p>
+          <p>
+            <span className="label">Percentage Fraudulent:</span>{" "}
+            {datasetInfo.percentage_fraudulent}
+          </p>
+          <p>
+            <span className="label">Percentage Normal:</span>{" "}
+            {datasetInfo.percentage_normal}
+          </p>
         </div>
       </div>
     );
