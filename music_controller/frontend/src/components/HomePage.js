@@ -215,7 +215,7 @@ const HomePage = () => {
         <div>
           <h2 className="headers">Important Dataset Info</h2>
         </div>
-        <div className="info-section scrollable-section">
+        <div className="info-section">
           <p>
             <span className="label">Total Transactions:</span>{" "}
             {datasetInfo.total_transactions}

@@ -12,8 +12,13 @@ export default class App extends Component {
   //className="center"
   render() {
     return (
-      <div className="width-100">
-        <HomePage />
+      // Adding 'app' here allows us to scroll if needed
+      <div id="app">
+        <div className="width-100">
+          <div className="content-section">
+            <HomePage />
+          </div>
+        </div>
       </div>
     );
   }
