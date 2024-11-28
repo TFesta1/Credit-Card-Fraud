@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef, Component } from "react";
 // import RoomJoinPage from "./RoomJoinPage";
 import MLFeatures from "./MLFeatures";
 import CreateCohorts from "./CreateCohorts";
+import MLAnalysis from "./MLAnalysis";
+
 import Room from "./Room";
 import { Button, Grid, Typography, ButtonGroup } from "@material-ui/core";
 import { useNavigate, Link } from "react-router-dom";
@@ -160,6 +162,11 @@ const HomePage = () => {
             <ul className="navbar-nav ml-auto">
               {/* Nav links */}
               <li className="nav-item">
+                <Link className="nav-link" to="/mlAnalysis">
+                  Model Analysis
+                </Link>
+              </li>
+              <li className="nav-item">
                 <Link className="nav-link" to="/cohorts">
                   Cohorts
                 </Link>
@@ -259,6 +266,7 @@ const HomePage = () => {
         <Route path="/" element={renderHomePage()} />
         <Route path="/mlFeatures" element={<MLFeatures />} />
         <Route path="/cohorts" element={<CreateCohorts />} />
+        <Route path="/mlAnalysis" element={<MLAnalysis />} />
         <Route path="/room/:roomCode" element={<Room />} />
         {/* :roomCode is a variable. This by default passes roomCode as "matched", which is just a param for how it got there, and we can use this to get the room */}
       </Routes>

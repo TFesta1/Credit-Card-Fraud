@@ -101,8 +101,11 @@ def trainModel():
     # newItem = test_o.limit(1)
     # newPrediction = model_o.transform(newItem)
     # newPrediction.select('Class', 'scaled_features', 'prediction').show(truncate=False)
-    predicted_test_gbc_o = predicted_test_gbc_o.limit(10) # Only keep the last 10 rows
+    # predicted_test_gbc_o = predicted_test_gbc_o.limit(10) # Only keep the last 10 rows
     df2 = predicted_test_gbc_o.toPandas()
+
+    df2 = df2.sample(frac=1).reset_index(drop=True)
+    df2 = df2.tail(10)
 
     predictions = list(df2['prediction'].values)
     features = list([list(i) for i in df2['features'].values])
