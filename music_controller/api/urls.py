@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import RoomView, CreateRoomView, GetRoom, JoinRoom, GetCustomer, GetFeatures, GetModel
+from .views import RoomView, CreateRoomView, GetRoom, JoinRoom, GetCustomer, GetFeatures, GetModel, GetModelImages
 
 
 urlpatterns = [
@@ -9,8 +9,12 @@ urlpatterns = [
     path('join-room', JoinRoom.as_view()),
     path('get-customer', GetCustomer.as_view()),
     path('get-features', GetFeatures.as_view()),
-    path('get-model', GetModel.as_view())
+    path('get-model', GetModel.as_view()),
+    path('get-model-images', GetModelImages.as_view())
 ]
+
+
+
 
 
 # python .\manage.py makemigrations

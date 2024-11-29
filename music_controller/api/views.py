@@ -6,6 +6,8 @@ from rest_framework.views import APIView #Parameter
 from rest_framework.response import Response #Custom response
 from .mlBackend.features import features 
 from .mlBackend.mlModel import modelData
+from django.conf import settings
+
 
 
 # Create your views here.
@@ -96,3 +98,15 @@ class GetModel(APIView):
         if modelData:
             return Response(modelData, status=status.HTTP_200_OK)
         return Response({'Bad Request': 'Model not found'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+class GetModelImages(APIView):
+    # Return images located in the folder 'images'
+    def get(self, request, format=None):
+        import os
+        from os import listdir
+        from os.path import isfile, join
+        mypath = os.path.abspath(os.path.join(settings.BASE_DIR, 'frontend', 'static', 'images'))
+        print(f"Path: {mypath}")
+        onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+        images = [{'id': i, 'name': f, 'path': request.build_absolute_uri(join(settings.STATIC_URL, 'images', f))} for i, f in enumerate(onlyfiles)]
+        return Response(images, status=status.HTTP_200_OK)

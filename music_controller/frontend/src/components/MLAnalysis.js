@@ -2,9 +2,29 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 const MLAnalysis = () => {
+  const [modelImages, setModelImages] = useState([]);
+  useEffect(() => {
+    const fetchData = () => {
+      const getRequestOptions = {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      };
+      fetch("/api/get-model-images", getRequestOptions)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(`data: ${JSON.stringify(data)}`);
+          setModelImages(data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    };
+    fetchData();
+  }, []);
+
   const renderAnalysis = () => {
     return (
-      <div className="home-container center">
+      <div className="home-container center width-customPages">
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
           <Link className="navbar-brand" to="/">
             Options
@@ -42,7 +62,19 @@ const MLAnalysis = () => {
           </div>
         </nav>
         <div>
-          <h2 className="headers">Latest Feed</h2>
+          <h2 className="headers">Various Model Metrics</h2>
+        </div>
+        <div>
+          {modelImages.map((modelImage, i) => (
+            <div key={modelImage.id}>
+              <h3>{modelImage.name}</h3>
+              <img
+                src={modelImage.path}
+                alt={modelImage.name}
+                className="model-image"
+              />
+            </div>
+          ))}
         </div>
       </div>
     );
