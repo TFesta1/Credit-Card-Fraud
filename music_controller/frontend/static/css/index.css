@@ -1,5 +1,5 @@
-@import url("https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css");
-@import url("https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined");
+/* @import url("https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css");
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined"); */
 
 html,
 body {
@@ -124,6 +124,7 @@ body {
   align-items: center;
   padding: 10px;
   background-color: black;
+  color: white;
 }
 
 .cohorts-container-child {
