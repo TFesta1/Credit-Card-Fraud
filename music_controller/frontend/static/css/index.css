@@ -134,3 +134,23 @@ body {
   box-sizing: border-box;
   padding: 10px;
 }
+
+.model-image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%; /* Adjust this percentage as needed */
+  height: 50%; /*auto;  This will maintain the aspect ratio */
+}
+
+@media (max-width: 768px) {
+  .model-image {
+    width: 80%; /* Increase width for smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .model-image {
+    width: 100%; /* Full width for very small screens */
+  }
+}

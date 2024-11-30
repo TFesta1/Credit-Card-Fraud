@@ -3,6 +3,16 @@ import { useNavigate, Link } from "react-router-dom";
 
 const MLAnalysis = () => {
   const [modelImages, setModelImages] = useState([]);
+  const [modelDetails, setModelDetails] = useState([]);
+
+  const intervalRef = useRef();
+  const modelDetailsRef = useRef(modelDetails);
+  const [retryCount, setRetryCount] = useState(0);
+
+  useEffect(() => {
+    modelDetailsRef.current = modelDetails;
+  }, [modelDetails]);
+
   useEffect(() => {
     const fetchData = () => {
       const getRequestOptions = {
@@ -12,7 +22,7 @@ const MLAnalysis = () => {
       fetch("/api/get-model-images", getRequestOptions)
         .then((response) => response.json())
         .then((data) => {
-          console.log(`data: ${JSON.stringify(data)}`);
+          // console.log(`data: ${JSON.stringify(data)}`);
           setModelImages(data);
         })
         .catch((error) => {
@@ -20,6 +30,36 @@ const MLAnalysis = () => {
         });
     };
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = () => {
+      const getRequestOptions = {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      };
+      fetch("/api/get-model", getRequestOptions)
+        .then((response) => response.json())
+        .then((data) => {
+          setModelDetails([data[4], data[5]]);
+          console.log(`modelDetails: ${JSON.stringify(data[4])}`);
+          // console.log(`data: `);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    };
+    fetchData();
+
+    intervalRef.current = setInterval(() => {
+      if (modelDetailsRef.current.length === 0) {
+        fetchData();
+        console.log("Retrying to fetch model data: ", modelDetailsRef);
+      } else {
+        console.log("Model Details ", modelDetailsRef);
+        clearInterval(intervalRef.current);
+      }
+    }, 500);
   }, []);
 
   const renderAnalysis = () => {
@@ -67,7 +107,7 @@ const MLAnalysis = () => {
         <div>
           {modelImages.map((modelImage, i) => (
             <div key={modelImage.id}>
-              <h3>{modelImage.name}</h3>
+              {/* <h3>{modelImage.name}</h3> */}
               <img
                 src={modelImage.path}
                 alt={modelImage.name}
@@ -75,6 +115,9 @@ const MLAnalysis = () => {
               />
             </div>
           ))}
+        </div>
+        <div>
+          <h2 className="headers">Model Comparisons</h2>
         </div>
       </div>
     );
