@@ -9,8 +9,25 @@ const MLAnalysis = () => {
   const modelDetailsRef = useRef(modelDetails);
   const [retryCount, setRetryCount] = useState(0);
 
+  const parseDataString = (dataString) => {
+    //For data like item1   item2    item3\n... (splits by 2 or more spaces, then makes it an object)
+    const rows = dataString.trim().split("\n");
+    const headers = rows[0].trim().split(/\s{2,}/); // split by 2 or more spaces
+    const data = rows.slice(1).map((row) => {
+      // skip the first row
+      const values = row.trim().split(/\s{2,}/);
+      return headers.reduce((obj, header, index) => {
+        // reduce to an object
+        obj[header.trim()] = values[index].trim();
+        return obj;
+      }, {});
+    });
+    return data;
+  };
+
   useEffect(() => {
     modelDetailsRef.current = modelDetails;
+    console.log("Model Details Ref: ", modelDetailsRef);
   }, [modelDetails]);
 
   useEffect(() => {
@@ -41,8 +58,8 @@ const MLAnalysis = () => {
       fetch("/api/get-model", getRequestOptions)
         .then((response) => response.json())
         .then((data) => {
-          setModelDetails([data[4], data[5]]);
-          console.log(`modelDetails: ${JSON.stringify(data[4])}`);
+          setModelDetails([data[4], parseDataString(data[5])]);
+          console.log(`modelDetails: ${parseDataString(data[5])}`);
           // console.log(`data: `);
         })
         .catch((error) => {
@@ -118,6 +135,31 @@ const MLAnalysis = () => {
         </div>
         <div>
           <h2 className="headers">Model Comparisons</h2>
+        </div>
+        <div>
+          <h3 className="headers">{modelDetailsRef[1][0]}</h3>
+          {/* {modelDetails.length > 0 ? (
+            <table>
+              <thead>
+                <tr>
+                  {modelDetails[1][0].map((header, index) => (
+                    <th key={index}>{header}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {modelDetails[1].map((row, rowIndex) => (
+                  <tr key={rowIndex}>
+                    {modelDetails[1][0].map((header, colIndex) => (
+                      <td key={colIndex}>{row[header]}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <div> Loading... </div>
+          )} */}
         </div>
       </div>
     );
