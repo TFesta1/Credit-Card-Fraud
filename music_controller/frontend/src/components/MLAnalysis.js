@@ -4,9 +4,13 @@ import { useNavigate, Link } from "react-router-dom";
 const MLAnalysis = () => {
   const [modelImages, setModelImages] = useState([]);
   const [modelDetails, setModelDetails] = useState([]);
+  const [modelHeaders, setModelHeaders] = useState([]);
+  const [modelStats, setModelStats] = useState([]);
 
   const intervalRef = useRef();
   const modelDetailsRef = useRef(modelDetails);
+  const modelStatsRef = useRef(modelStats);
+  const modelHeadersRef = useRef(modelHeaders);
   const [retryCount, setRetryCount] = useState(0);
 
   const parseDataString = (dataString) => {
@@ -25,9 +29,33 @@ const MLAnalysis = () => {
     return data;
   };
 
+  const parseDataHeaders = (dataString) => {
+    //For data like item1   item2    item3\n... (splits by 2 or more spaces, then makes it an object)
+    const rows = dataString.trim().split("\n");
+    const headers = rows[0].trim().split(/\s{2,}/);
+    return headers;
+  };
+
+  const parseDataStringRows = (dataString) => {
+    //For data like item1   item2    item3\n... (splits by 2 or more spaces, then makes it an object)
+    const rows = dataString.trim().split("\n");
+    const headers = rows[0].trim().split(/\s{2,}/);
+    const data = rows.slice(1).map((row) => {
+      // skip the first row
+      const values = row.trim().split(/\s{2,}/);
+      return headers.reduce((obj, header, index) => {
+        // reduce to an object
+        obj[header.trim()] = values[index].trim();
+        return obj;
+      }, {});
+    });
+    console.log("Data: ", data);
+    return data;
+  };
+
   useEffect(() => {
     modelDetailsRef.current = modelDetails;
-    console.log("Model Details Ref: ", modelDetailsRef);
+    console.log("Model Details Ref0: ", modelDetailsRef["current"]);
   }, [modelDetails]);
 
   useEffect(() => {
@@ -59,7 +87,9 @@ const MLAnalysis = () => {
         .then((response) => response.json())
         .then((data) => {
           setModelDetails([data[4], parseDataString(data[5])]);
-          console.log(`modelDetails: ${parseDataString(data[5])}`);
+          setModelHeaders(data[4]);
+          setModelStats(data[5]);
+          // console.log(`modelDetails: ${parseDataString(data[5])}`);
           // console.log(`data: `);
         })
         .catch((error) => {
@@ -73,7 +103,8 @@ const MLAnalysis = () => {
         fetchData();
         console.log("Retrying to fetch model data: ", modelDetailsRef);
       } else {
-        console.log("Model Details ", modelDetailsRef);
+        console.log("Model Details ", modelDetailsRef[0]);
+        console.log("Model Details1 ", modelDetailsRef[1]);
         clearInterval(intervalRef.current);
       }
     }, 500);
@@ -86,6 +117,7 @@ const MLAnalysis = () => {
           <Link className="navbar-brand" to="/">
             Options
           </Link>
+
           <button
             className="navbar-toggler"
             type="button"
@@ -119,12 +151,50 @@ const MLAnalysis = () => {
           </div>
         </nav>
         <div>
-          <h2 className="headers">Various Model Metrics</h2>
+          {modelDetails.length > 0 ? (
+            <table className="table">
+              <thead classNAme="thead-dark">
+                <tr>
+                  {Object.keys(modelDetails[1][0]).map((header, index) => (
+                    <th key={index}>{header}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {modelDetails.slice(1).map((row, rowIndex) => (
+                  <tr key={rowIndex}>
+                    {Object.values(row).map(
+                      (value, colIndex) =>
+                        Object.keys(value).map((header, i) => (
+                          <td key={colIndex}>
+                            {i}
+                            {/* value[header] */}
+                            {/* {typeof value === "object"
+                            ? JSON.stringify(value)
+                            : String(value)} */}
+                          </td>
+                        ))
+                      // <td key={colIndex}>
+                      //   {value["Model"]}
+                      //   {/* {typeof value === "object"
+                      //     ? JSON.stringify(value)
+                      //     : String(value)} */}
+                      // </td>
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <div>Loading...</div>
+          )}
         </div>
         <div>
+          <h2 className="headers">Various Model Metrics</h2>
+        </div>
+        {/* <div>
           {modelImages.map((modelImage, i) => (
             <div key={modelImage.id}>
-              {/* <h3>{modelImage.name}</h3> */}
               <img
                 src={modelImage.path}
                 alt={modelImage.name}
@@ -135,32 +205,7 @@ const MLAnalysis = () => {
         </div>
         <div>
           <h2 className="headers">Model Comparisons</h2>
-        </div>
-        <div>
-          <h3 className="headers">{modelDetailsRef[1][0]}</h3>
-          {/* {modelDetails.length > 0 ? (
-            <table>
-              <thead>
-                <tr>
-                  {modelDetails[1][0].map((header, index) => (
-                    <th key={index}>{header}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {modelDetails[1].map((row, rowIndex) => (
-                  <tr key={rowIndex}>
-                    {modelDetails[1][0].map((header, colIndex) => (
-                      <td key={colIndex}>{row[header]}</td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <div> Loading... </div>
-          )} */}
-        </div>
+        </div> */}
       </div>
     );
   };
