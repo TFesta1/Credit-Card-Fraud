@@ -152,8 +152,8 @@ const MLAnalysis = () => {
         </nav>
         <div>
           {modelDetails.length > 0 ? (
-            <table className="table">
-              <thead classNAme="thead-dark">
+            <table className="table table-striped table-bordered table-hover">
+              <thead className="thead-dark">
                 <tr>
                   {Object.keys(modelDetails[1][0]).map((header, index) => (
                     <th key={index}>{header}</th>
@@ -162,26 +162,21 @@ const MLAnalysis = () => {
               </thead>
               <tbody>
                 {modelDetails.slice(1).map((row, rowIndex) => (
-                  <tr key={rowIndex}>
-                    {Object.values(row).map(
-                      (value, colIndex) =>
-                        Object.keys(value).map((header, i) => (
-                          <td key={colIndex}>
-                            {i}
-                            {/* value[header] */}
-                            {/* {typeof value === "object"
-                            ? JSON.stringify(value)
-                            : String(value)} */}
-                          </td>
-                        ))
-                      // <td key={colIndex}>
-                      //   {value["Model"]}
-                      //   {/* {typeof value === "object"
-                      //     ? JSON.stringify(value)
-                      //     : String(value)} */}
-                      // </td>
-                    )}
-                  </tr>
+                  <React.Fragment key={rowIndex}>
+                    {Object.values(row).map((value, colIndex) => (
+                      <React.Fragment key={`${rowIndex}_${colIndex}`}>
+                        {colIndex > 0 ? ( //skip the first row
+                          <tr key={`${rowIndex}_${colIndex}`}>
+                            {Object.keys(value).map((header, i) => (
+                              <td key={`${rowIndex}_${colIndex}_${i}`}>
+                                {value[header]}
+                              </td>
+                            ))}
+                          </tr>
+                        ) : null}
+                      </React.Fragment>
+                    ))}
+                  </React.Fragment>
                 ))}
               </tbody>
             </table>
@@ -189,6 +184,7 @@ const MLAnalysis = () => {
             <div>Loading...</div>
           )}
         </div>
+
         <div>
           <h2 className="headers">Various Model Metrics</h2>
         </div>
