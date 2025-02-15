@@ -4,12 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Music Controller</title>
-    {% load static %}
+    {% load static %} {% comment %}
     <link
       rel="stylesheet"
       type="text/css"
       href="{% static 'css/index.css' %}"
     />
+    {% endcomment %}
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -18,7 +19,166 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined"
     />
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        color: white;
+        overflow-y: auto !important;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .content-section {
+        flex: 1;
+        overflow-y: auto !important;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+      }
+
+      #main {
+        width: 100%;
+        height: auto; /* hopefully allows us to scroll */
+        /* position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0; */
+      }
+
+      #app {
+        width: 100%;
+        /* height: 100%; */
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      .center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .center-title {
+        text-align: center;
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .fraudulent {
+        background-color: red;
+        color: white;
+      }
+
+      .non-fraudulent {
+        background-color: green;
+        color: white;
+      }
+
+      .info-section {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+
+      .info-section h3 {
+        margin-top: 0;
+        font-size: 18px;
+        color: #333;
+      }
+
+      .info-section p {
+        margin: 5px 0;
+        font-size: 16px;
+        color: #555;
+      }
+
+      .info-section span.label {
+        font-weight: bold;
+        color: #000;
+      }
+
+      .width-100 {
+        width: 100%;
+        overflow-y: auto !important;
+      }
+
+      .width-customPages {
+        width: 60%;
+        overflow-y: auto !important;
+      }
+
+      .full-width {
+        width: 100%;
+        height: 100%;
+        display: flex;
+      }
+
+      .test-width {
+        width: 1000px;
+      }
+
+      .cohorts-container {
+        display: flex;
+        flex-wrap: wrap;
+        /* background-color: rgb(10, 10, 10); */
+        justify-content: space-around;
+      }
+
+      @media (max-width: 1950px) {
+        /* smaller than this pixel amount */
+        .cohorts-container {
+          width: 80%;
+        }
+      }
+
+      .headers {
+        display: flex;
+        justify-content: center; /* center the text */
+        align-items: center;
+        padding: 10px;
+        background-color: black;
+        color: white;
+      }
+
+      .cohorts-container-child {
+        flex: 1 0 25%;
+        box-sizing: border-box;
+        padding: 10px;
+      }
+
+      .model-image {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%; /* Adjust this percentage as needed */
+        height: 50%; /*auto;  This will maintain the aspect ratio */
+      }
+
+      @media (max-width: 768px) {
+        .model-image {
+          width: 80%; /* Increase width for smaller screens */
+        }
+      }
+
+      @media (max-width: 480px) {
+        .model-image {
+          width: 100%; /* Full width for very small screens */
+        }
+      }
+    </style>
   </head>
+
   <body>
     <div id="main">
       <div id="app"></div>
